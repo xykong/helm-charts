@@ -3,6 +3,16 @@ entries:
   upsource:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2021-12-24T02:27:52.28318432Z"
+    description: 'Upsource: Code Review and Project Analytics by JetBrains'
+    digest: 2fee52fdb5e62abb31fe456e5f35bcdb6d84cc6652ba285ebe0e35f9e0e3fea7
+    name: upsource
+    type: application
+    urls:
+    - https://github.com/xykong/helm-charts/releases/download/upsource-0.1.1/upsource-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2021-12-23T21:09:19.142732+08:00"
     description: A Helm chart for Kubernetes
     digest: d67a2157f1db119a7db151acff1283c3dedd3a133ca9bd1fa68db35f51bc2553
@@ -11,4 +21,4 @@ entries:
     urls:
     - upsource-0.1.0.tgz
     version: 0.1.0
-generated: "2021-12-23T21:09:19.141622+08:00"
+generated: "2021-12-24T02:27:52.283196021Z"
