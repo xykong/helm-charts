@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c
+    kompose.version: 1.26.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: frontend
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c
+        kompose.version: 1.26.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/up-net: "true"
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - args:
+            - --J
+          env:
+            - name: CASSANDRA_HOSTS
+              value: cassandra
+            - name: CASSANDRA_NATIVE_TRANSPORT_PORT
+              value: "9042"
+            - name: UPSOURCE_DATABASE
+              value: datastax
+            - name: UPSOURCE_SERVICE_LISTEN_ADDRESS
+              value: 0.0.0.0
+            - name: UPSOURCE_SERVICE_MESSAGING_PORT
+              value: "10061"
+            - name: UPSOURCE_STATISTICS_UPLOAD
+              value: "true"
+            - name: UPSOURCE_SUBNET
+            - name: UPSOURCE_WEB_SERVER_LISTEN_PORT
+              value: "10070"
+          image: 'jetbrains/upsource-frontend:'
+          name: frontend
+          ports:
+            - containerPort: 10061
+            - containerPort: 8886
+            - containerPort: 10070
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/upsource-frontend/logs
+              name: frontend-claim0
+      restartPolicy: Always
+      volumes:
+        - name: frontend-claim0
+          persistentVolumeClaim:
+            claimName: frontend-claim0
+status: {}
