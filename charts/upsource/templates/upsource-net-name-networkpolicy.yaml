@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  creationTimestamp: null
+  name: upsource-net-name
+spec:
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              app-network/upsource-net-name: "true"
+  podSelector:
+    matchLabels:
+      app-network/upsource-net-name: "true"

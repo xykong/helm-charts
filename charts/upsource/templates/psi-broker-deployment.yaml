@@ -18,28 +18,68 @@ spec:
       annotations:
       creationTimestamp: null
       labels:
-        app-network/up-net: "true"
+        app-network/upsource-net-name: "true"
         app-service: psi-broker
     spec:
       containers:
         - args:
-            - --J
+            - --Jupsource_psi_broker_xmx
           env:
-            - name: CASSANDRA_HOSTS
-              value: cassandra
-            - name: CASSANDRA_NATIVE_TRANSPORT_PORT
-              value: "9042"
-            - name: UPSOURCE_DATABASE
-              value: datastax
             - name: UPSOURCE_PSI_BROKER_LISTEN_PORT
-            - name: UPSOURCE_SERVICE_LISTEN_ADDRESS
-              value: 0.0.0.0
-            - name: UPSOURCE_SERVICE_MESSAGING_PORT
-              value: "10061"
-            - name: UPSOURCE_STATISTICS_UPLOAD
-              value: "true"
+              value: upsource_psi_broker_listen_port
             - name: UPSOURCE_SUBNET
-          image: 'jetbrains/upsource-psi-broker:'
+              value: upsource_subnet
+            - name: export CASSANDRA_HOSTS
+              value: cassandra
+            - name: export CASSANDRA_NATIVE_TRANSPORT_PORT
+              value: "9042"
+            - name: export HUB_KEYSTORE_PASSWORD
+              value: hub_keystore_password
+            - name: export HUB_KEYSTORE_PATH
+              value: hub_keystore_path
+            - name: export HUB_URL
+              value: hub_url
+            - name: export UPSOURCE_ANALYZER_XMX
+              value: upsource_analyzer_xmx
+            - name: export UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM
+              value: upsource_backups_path_on_host_system
+            - name: export UPSOURCE_DATABASE
+              value: datastax
+            - name: export UPSOURCE_FILE_CLUSTERING_XMX
+              value: upsource_file_clustering_xmx
+            - name: export UPSOURCE_FRONTEND_XMX
+              value: upsource_frontend_xmx
+            - name: export UPSOURCE_IMAGES_PREFIX
+              value: upsource_images_prefix
+            - name: export UPSOURCE_MONITORING_LISTEN_PORT
+              value: upsource_monitoring_listen_port
+            - name: export UPSOURCE_NET_NAME
+              value: upsource_net_name
+            - name: export UPSOURCE_OPSCENTER_XMX
+              value: upsource_opscenter_xmx
+            - name: export UPSOURCE_PSI_AGENT_XMX
+              value: upsource_psi_agent_xmx
+            - name: export UPSOURCE_PSI_BROKER_LISTEN_PORT
+              value: upsource_psi_broker_listen_port
+            - name: export UPSOURCE_PSI_BROKER_XMX
+              value: upsource_psi_broker_xmx
+            - name: export UPSOURCE_SERVICE_ID
+              value: upsource_service_id
+            - name: export UPSOURCE_SERVICE_LISTEN_ADDRESS
+              value: 0.0.0.0
+            - name: export UPSOURCE_SERVICE_MESSAGING_PORT
+              value: "10061"
+            - name: export UPSOURCE_SERVICE_SECRET
+              value: upsource_service_secret
+            - name: export UPSOURCE_STATISTICS_UPLOAD
+              value: "true"
+            - name: export UPSOURCE_SUBNET
+              value: upsource_subnet
+            - name: export UPSOURCE_URL
+              value: upsource_url
+            - name: export UPSOURCE_VERSION
+              value: upsource_version
+          image: upsource_images_prefixjetbrains/upsource-psi-broker:upsource_version
           name: psi-broker
           ports:
             - containerPort: 10061

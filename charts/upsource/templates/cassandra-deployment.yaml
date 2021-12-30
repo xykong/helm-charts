@@ -18,15 +18,16 @@ spec:
       annotations:
       creationTimestamp: null
       labels:
-        app-network/up-net: "true"
+        app-network/upsource-net-name: "true"
         app-service: cassandra
     spec:
       containers:
         - env:
             - name: UPSOURCE_SUBNET
+              value: upsource_subnet
             - name: constraint
-              value: node==
-          image: 'jetbrains/upsource-cassandra:'
+              value: node==upsource_cassandra_node
+          image: upsource_images_prefixjetbrains/upsource-cassandra:upsource_version
           name: cassandra
           ports:
             - containerPort: 9042
