@@ -2,28 +2,24 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.26.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: cassandra
+    app-service: cassandra
   name: cassandra
 spec:
   replicas: 1
   selector:
     matchLabels:
-      io.kompose.service: cassandra
+      app-service: cassandra
   strategy:
     type: Recreate
   template:
     metadata:
       annotations:
-        kompose.cmd: kompose convert -c
-        kompose.version: 1.26.0 (HEAD)
       creationTimestamp: null
       labels:
-        io.kompose.network/up-net: "true"
-        io.kompose.service: cassandra
+        app-network/up-net: "true"
+        app-service: cassandra
     spec:
       containers:
         - env:

@@ -2,11 +2,9 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kompose.cmd: kompose convert -c
-    kompose.version: 1.26.0 (HEAD)
   creationTimestamp: null
   labels:
-    io.kompose.service: haproxy
+    app-service: haproxy
   name: haproxy
 spec:
   ports:
@@ -14,6 +12,6 @@ spec:
       port: 8080
       targetPort: 8080
   selector:
-    io.kompose.service: haproxy
+    app-service: haproxy
 status:
   loadBalancer: {}

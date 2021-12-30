@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: psi-agent-claim0
+    app-service: psi-agent-claim0
   name: psi-agent-claim0
 spec:
   accessModes:

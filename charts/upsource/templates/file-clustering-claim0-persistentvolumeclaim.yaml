@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: file-clustering-claim0
+    app-service: file-clustering-claim0
   name: file-clustering-claim0
 spec:
   accessModes:

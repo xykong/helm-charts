@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: analyzer-claim0
+    app-service: analyzer-claim0
   name: analyzer-claim0
 spec:
   accessModes:

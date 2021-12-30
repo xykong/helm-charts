@@ -3,7 +3,7 @@ kind: PersistentVolumeClaim
 metadata:
   creationTimestamp: null
   labels:
-    io.kompose.service: psi-broker-claim0
+    app-service: psi-broker-claim0
   name: psi-broker-claim0
 spec:
   accessModes:
