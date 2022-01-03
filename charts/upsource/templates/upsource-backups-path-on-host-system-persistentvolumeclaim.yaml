@@ -1,7 +1,6 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
   labels:
     app-service: upsource-backups-path-on-host-system
   name: upsource-backups-path-on-host-system

@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
   labels:
     app-service: analyzer-claim0
   name: analyzer-claim0
 spec:
+{{- if .Values.analyzer.persistence.storageClass }}
+  storageClassName: {{ .Values.analyzer.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.analyzer.persistence.size }}
 status: {}

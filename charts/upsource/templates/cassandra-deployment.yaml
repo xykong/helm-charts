@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-  creationTimestamp: null
   labels:
     app-service: cassandra
   name: cassandra
@@ -16,25 +15,29 @@ spec:
   template:
     metadata:
       annotations:
-      creationTimestamp: null
       labels:
         app-network/upsource-net-name: "true"
         app-service: cassandra
     spec:
       containers:
         - env:
+        {{- if .Values.cassandra.upsourceSubnet }}
             - name: UPSOURCE_SUBNET
-              value: upsource_subnet
+              value: {{ .Values.cassandra.upsourceSubnet }}
+        {{- end }}
+        {{- if .Values.cassandra.constraint }}
             - name: constraint
-              value: node==upsource_cassandra_node
-          image: upsource_images_prefixjetbrains/upsource-cassandra:upsource_version
+              value: node=={{ .Values.cassandra.constraint }}
+        {{- end }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag }}
+          imagePullPolicy: {{ .Values.cassandra.image.pullPolicy | quote }}
           name: cassandra
           ports:
             - containerPort: 9042
           resources: {}
           volumeMounts:
-            - mountPath: /var/lib/cassandra
-              name: cassandra-claim0
+            - name: cassandra-claim0
+              mountPath: /var/lib/cassandra
       restartPolicy: Always
       volumes:
         - name: cassandra-claim0

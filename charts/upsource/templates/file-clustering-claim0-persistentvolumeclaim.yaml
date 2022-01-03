@@ -1,11 +1,13 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  creationTimestamp: null
   labels:
     app-service: file-clustering-claim0
   name: file-clustering-claim0
 spec:
+{{- if .Values.fileClustering.persistence.storageClass }}
+  storageClassName: {{ .Values.fileClustering.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

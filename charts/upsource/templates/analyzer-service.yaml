@@ -2,16 +2,16 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-  creationTimestamp: null
   labels:
     app-service: analyzer
   name: analyzer
 spec:
+  type: {{ .Values.analyzer.service.type }}
   ports:
-    - name: "10061"
+    - name: '10061'
       port: 10061
       targetPort: 10061
-    - name: "8886"
+    - name: '8886'
       port: 8886
       targetPort: 8886
   selector:

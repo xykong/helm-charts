@@ -8,11 +8,11 @@ image:
   repository: nginx
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: ''
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -21,14 +21,16 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: ''
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -42,8 +44,9 @@ service:
 
 ingress:
   enabled: false
-  className: ""
-  annotations: {}
+  className: ''
+  annotations:
+    {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
@@ -56,7 +59,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -80,3 +84,103 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+global:
+  image:
+    prefix: ''
+  args:
+
+  env:
+    # UPSOURCE_SUBNET: upsource_subnet
+    # UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
+    # CASSANDRA_HOSTS: cassandra
+    # CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
+    # HUB_KEYSTORE_PASSWORD: hub_keystore_password
+    # HUB_KEYSTORE_PATH: hub_keystore_path
+    # HUB_URL: hub_url
+    # UPSOURCE_ANALYZER_XMX: 1024m
+    # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: upsource_backups_path_on_host_system
+    # UPSOURCE_DATABASE: datastax
+    # UPSOURCE_FILE_CLUSTERING_XMX: 1024m
+    UPSOURCE_FRONTEND_XMX: 1024m
+    # UPSOURCE_IMAGES_PREFIX: upsource_images_prefix
+    # UPSOURCE_MONITORING_LISTEN_PORT: upsource_monitoring_listen_port
+    # UPSOURCE_NET_NAME: upsource_net_name
+    # UPSOURCE_OPSCENTER_XMX: 1024m
+    # UPSOURCE_PSI_AGENT_XMX: 1024m
+    # UPSOURCE_PSI_BROKER_LISTEN_PORT: upsource_psi_broker_listen_port
+    # UPSOURCE_PSI_BROKER_XMX: 1024m
+    # UPSOURCE_SERVICE_ID: upsource_service_id
+    # UPSOURCE_SERVICE_LISTEN_ADDRESS: 0.0.0.0
+    # UPSOURCE_SERVICE_MESSAGING_PORT: '10061'
+    # UPSOURCE_SERVICE_SECRET: upsource_service_secret
+    # UPSOURCE_STATISTICS_UPLOAD: 'true'
+    # UPSOURCE_URL: upsource_url
+    # UPSOURCE_VERSION: upsource_version
+
+hub:
+  image:
+    registry: docker.io
+    repository: jetbrains/hub
+    tag: 2021.1.14127
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8080
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+analyzer:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-analyzer
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+cassandra:
+  upsourceSubnet: ''
+  constraint: ''
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-cassandra
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+frontend:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-frontend
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+fileClustering:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-file-clustering
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi

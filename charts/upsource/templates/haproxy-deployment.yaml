@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-  creationTimestamp: null
   labels:
     app-service: haproxy
   name: haproxy
@@ -15,7 +14,6 @@ spec:
   template:
     metadata:
       annotations:
-      creationTimestamp: null
       labels:
         app-network/upsource-net-name: "true"
         app-service: haproxy
