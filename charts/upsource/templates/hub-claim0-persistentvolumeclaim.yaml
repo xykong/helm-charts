@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app-service: hub-claim0
+  name: hub-claim0
+spec:
+{{- if .Values.hub.persistence.storageClass }}
+  storageClassName: {{ .Values.hub.persistence.storageClass }}
+{{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.hub.persistence.size }}
+status: {}
