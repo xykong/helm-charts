@@ -5,6 +5,9 @@ metadata:
     app-service: frontend-claim0
   name: frontend-claim0
 spec:
+{{- if .Values.frontend.persistence.storageClass }}
+  storageClassName: {{ .Values.frontend.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

@@ -41,6 +41,9 @@ spec:
             - name: frontend-claim0
               mountPath: /opt/upsource-frontend/logs
       restartPolicy: Always
+      securityContext:
+        runAsUser: 13001
+        fsGroup: 13001
       volumes:
         - name: frontend-claim0
           persistentVolumeClaim:

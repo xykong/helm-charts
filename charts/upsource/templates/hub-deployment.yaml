@@ -19,6 +19,34 @@ spec:
         app-network/upsource-net-name: "true"
         app-service: hub
     spec:
+      initContainers:
+        - name: init-configure
+          image: {{ .Values.global.image.prefix }}{{ .Values.hub.image.repository }}:{{ .Values.hub.image.tag }}
+          command:
+            # - tail
+            # - -f
+            # - /etc/hosts
+            - /bin/bash
+            - /run.sh
+            - configure
+            - -J-Ddisable.configuration.wizard.on.clean.install=true
+            - --base-url=http://localhost:{{ .Values.hub.service.port }}
+          volumeMounts:
+            - name: hub-claim0
+              mountPath: /opt/hub/conf
+              subPath: conf
+        - name: init-configure-next-start
+          image: {{ .Values.global.image.prefix }}{{ .Values.hub.image.repository }}:{{ .Values.hub.image.tag }}
+          command:
+            - /bin/bash
+            - /run.sh
+            - configure-next-start
+            - --J-Djetbrains.hub.admin.restore=true
+            - --J-Djetbrains.hub.admin.password=12345678
+          volumeMounts:
+            - name: hub-claim0
+              mountPath: /opt/hub/conf
+              subPath: conf
       containers:
         - env:
         {{- if .Values.hub.upsourceSubnet }}
