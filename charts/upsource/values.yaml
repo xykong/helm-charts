@@ -97,7 +97,8 @@ global:
     # CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
     # HUB_KEYSTORE_PASSWORD: hub_keystore_password
     # HUB_KEYSTORE_PATH: hub_keystore_path
-    HUB_URL: http://hub.default.svc.cluster.local:8080
+    HUB_URL: http://hub.default.svc.cluster.local:8080/hub/
+    UPSOURCE_CLUSTER_INIT_XMX: 1024m
     UPSOURCE_ANALYZER_XMX: 1024m
     # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: upsource_backups_path_on_host_system
     # UPSOURCE_DATABASE: datastax
@@ -127,6 +128,19 @@ hub:
   service:
     type: ClusterIP
     port: 8080
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+clusterInit:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-cluster-init
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi

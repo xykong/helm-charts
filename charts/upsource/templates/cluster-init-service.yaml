@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app-service: cluster-init
+  name: cluster-init
+spec:
+  ports:
+    - name: "10061"
+      port: 10061
+      targetPort: 10061
+    - name: "8886"
+      port: 8886
+      targetPort: 8886
+  selector:
+    app-service: cluster-init
+status:
+  loadBalancer: {}

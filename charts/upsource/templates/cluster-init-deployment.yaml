@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app-service: cluster-init
+  name: cluster-init
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app-service: cluster-init
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.network/clusterconfig202011956-up-net: "true"
+        app-service: cluster-init
+    spec:
+      containers:
+        - args:
+            - --J-Xmx{{ .Values.global.env.UPSOURCE_CLUSTER_INIT_XMX }}
+            - --J
+          env:
+          {{- range $index, $topping := .Values.global.env }}
+            {{- if $topping }}
+            - name: {{ $index }}
+              value: {{ $topping }}
+            {{- end }}
+          {{- end }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy | quote }}
+          name: cluster-init
+          ports:
+            - containerPort: 10061
+            - containerPort: 8886
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/upsource-cluster-init/logs
+              name: cluster-init-claim0
+      restartPolicy: Always
+      volumes:
+        - name: cluster-init-claim0
+          persistentVolumeClaim:
+            claimName: cluster-init-claim0
+status: {}
