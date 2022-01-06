@@ -6,6 +6,7 @@ metadata:
     app-service: opscenter
   name: opscenter
 spec:
+  type: {{ .Values.opsCenter.service.type }}
   ports:
     - name: "10061"
       port: 10061

@@ -21,17 +21,20 @@ spec:
       containers:
         - args:
             - --J-Xmx{{ .Values.global.env.UPSOURCE_CLUSTER_INIT_XMX }}
-            - --J
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
             - name: {{ $index }}
-              value: {{ $topping }}
+              value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
-          imagePullPolicy: {{ .Values.frontend.image.pullPolicy | quote }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.clusterInit.image.repository }}:{{ .Values.clusterInit.image.tag }}
+          imagePullPolicy: {{ .Values.clusterInit.image.pullPolicy | quote }}
           name: cluster-init
+          command:
+            - tail
+            - -f
+            - /etc/hosts
           ports:
             - containerPort: 10061
             - containerPort: 8886
@@ -40,6 +43,9 @@ spec:
             - mountPath: /opt/upsource-cluster-init/logs
               name: cluster-init-claim0
       restartPolicy: Always
+      securityContext:
+        runAsUser: 13001
+        fsGroup: 13001
       volumes:
         - name: cluster-init-claim0
           persistentVolumeClaim:

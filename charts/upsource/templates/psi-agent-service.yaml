@@ -6,6 +6,7 @@ metadata:
     app-service: psi-agent
   name: psi-agent
 spec:
+  type: {{ .Values.psiAgent.service.type }}
   ports:
     - name: "10061"
       port: 10061

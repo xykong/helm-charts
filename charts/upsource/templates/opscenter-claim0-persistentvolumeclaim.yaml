@@ -5,9 +5,12 @@ metadata:
     app-service: opscenter-claim0
   name: opscenter-claim0
 spec:
+{{- if .Values.opsCenter.persistence.storageClass }}
+  storageClassName: {{ .Values.opsCenter.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.opsCenter.persistence.size }}
 status: {}

@@ -33,7 +33,7 @@ spec:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
             - name: {{ $index }}
-              value: {{ $topping }}
+              value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
           ports:

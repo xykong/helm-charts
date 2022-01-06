@@ -5,6 +5,9 @@ metadata:
     app-service: opscenter-claim1
   name: opscenter-claim1
 spec:
+{{- if .Values.opsCenter.persistence.storageClass }}
+  storageClassName: {{ .Values.opsCenter.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:

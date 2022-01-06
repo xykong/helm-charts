@@ -5,12 +5,12 @@ metadata:
     app-service: cluster-init-claim0
   name: cluster-init-claim0
 spec:
-{{- if .Values.frontend.persistence.storageClass }}
-  storageClassName: {{ .Values.frontend.persistence.storageClass }}
+{{- if .Values.clusterInit.persistence.storageClass }}
+  storageClassName: {{ .Values.clusterInit.persistence.storageClass }}
 {{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: {{ .Values.frontend.persistence.size }}
+      storage: {{ .Values.clusterInit.persistence.size }}
 status: {}

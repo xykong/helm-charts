@@ -93,16 +93,16 @@ global:
   env:
     # UPSOURCE_SUBNET: upsource_subnet
     # UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
-    # CASSANDRA_HOSTS: cassandra
-    # CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
+    CASSANDRA_HOSTS: cassandra.default.svc.cluster.local
+    CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
+    UPSOURCE_DATABASE: datastax
     # HUB_KEYSTORE_PASSWORD: hub_keystore_password
     # HUB_KEYSTORE_PATH: hub_keystore_path
     HUB_URL: http://hub.default.svc.cluster.local:8080/hub/
     UPSOURCE_CLUSTER_INIT_XMX: 1024m
     UPSOURCE_ANALYZER_XMX: 1024m
     # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: upsource_backups_path_on_host_system
-    # UPSOURCE_DATABASE: datastax
-    # UPSOURCE_FILE_CLUSTERING_XMX: 1024m
+    UPSOURCE_FILE_CLUSTERING_XMX: 1024m
     UPSOURCE_FRONTEND_XMX: 1024m
     # UPSOURCE_IMAGES_PREFIX: upsource_images_prefix
     # UPSOURCE_MONITORING_LISTEN_PORT: upsource_monitoring_listen_port
@@ -118,6 +118,7 @@ global:
     # UPSOURCE_STATISTICS_UPLOAD: 'true'
     UPSOURCE_URL: http://upsource.default.svc.cluster.local
     UPSOURCE_VERSION: 2020.1.1956
+    UPSOURCE_MONITORING_RECORD_HOURS: 1
 
 hub:
   image:
@@ -128,19 +129,6 @@ hub:
   service:
     type: ClusterIP
     port: 8080
-  persistence:
-    storageClass: 'cbs-csi'
-    size: 10Gi
-
-clusterInit:
-  image:
-    registry: docker.io
-    repository: jetbrains/upsource-cluster-init
-    tag: 2020.1.1956
-    pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -173,10 +161,10 @@ cassandra:
     storageClass: 'cbs-csi'
     size: 10Gi
 
-frontend:
+clusterInit:
   image:
     registry: docker.io
-    repository: jetbrains/upsource-frontend
+    repository: jetbrains/upsource-cluster-init
     tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
@@ -190,6 +178,58 @@ fileClustering:
   image:
     registry: docker.io
     repository: jetbrains/upsource-file-clustering
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+frontend:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-frontend
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+opsCenter:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-opscenter
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+psiAgent:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-psi-agent
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+psiBroker:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-psi-broker
     tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:

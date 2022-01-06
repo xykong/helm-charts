@@ -5,9 +5,12 @@ metadata:
     app-service: psi-broker-claim0
   name: psi-broker-claim0
 spec:
+{{- if .Values.psiBroker.persistence.storageClass }}
+  storageClassName: {{ .Values.psiBroker.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.psiBroker.persistence.size }}
 status: {}

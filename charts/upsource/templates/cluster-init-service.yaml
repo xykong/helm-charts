@@ -5,6 +5,7 @@ metadata:
     app-service: cluster-init
   name: cluster-init
 spec:
+  type: {{ .Values.clusterInit.service.type }}
   ports:
     - name: "10061"
       port: 10061

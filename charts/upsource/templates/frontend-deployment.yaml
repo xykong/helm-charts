@@ -26,7 +26,7 @@ spec:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
             - name: {{ $index }}
-              value: {{ $topping }}
+              value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
           image: {{ .Values.global.image.prefix }}{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}

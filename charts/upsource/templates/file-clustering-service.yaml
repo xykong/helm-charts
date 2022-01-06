@@ -6,6 +6,7 @@ metadata:
     app-service: file-clustering
   name: file-clustering
 spec:
+  type: {{ .Values.fileClustering.service.type }}
   ports:
     - name: "10061"
       port: 10061

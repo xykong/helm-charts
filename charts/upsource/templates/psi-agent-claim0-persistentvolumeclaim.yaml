@@ -5,9 +5,12 @@ metadata:
     app-service: psi-agent-claim0
   name: psi-agent-claim0
 spec:
+{{- if .Values.psiAgent.persistence.storageClass }}
+  storageClassName: {{ .Values.psiAgent.persistence.storageClass }}
+{{- end }}
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Mi
+      storage: {{ .Values.psiAgent.persistence.size }}
 status: {}
