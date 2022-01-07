@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J-Xmx{{ .Values.global.env.UPSOURCE_OPSCENTER_XMX }}
+            - --J{{ .Values.global.env.UPSOURCE_OPSCENTER_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -35,19 +35,21 @@ spec:
           ports:
             - containerPort: 10061
             - containerPort: 8886
-            - containerPort: 0
+            - containerPort: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT }}
           resources: {}
           volumeMounts:
             - mountPath: /opt/upsource-opscenter/logs
               name: opscenter-claim0
+              subPath: logs
             - mountPath: /opt/upsource-opscenter/backup
-              name: upsource-backups-path-on-host-system
+              name: opscenter-claim0
+              subPath: backup
       restartPolicy: Always
+      securityContext:
+        runAsUser: 13001
+        fsGroup: 13001
       volumes:
         - name: opscenter-claim0
           persistentVolumeClaim:
             claimName: opscenter-claim0
-        - name: upsource-backups-path-on-host-system
-          persistentVolumeClaim:
-            claimName: upsource-backups-path-on-host-system
 status: {}

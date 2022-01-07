@@ -14,9 +14,9 @@ spec:
     - name: "8886"
       port: 8886
       targetPort: 8886
-    - name: "0"
-      port: 0
-      targetPort: 0
+    - name: {{ .Values.global.env.UPSOURCE_PSI_BROKER_LISTEN_PORT | quote }}
+      port: {{ .Values.global.env.UPSOURCE_PSI_BROKER_LISTEN_PORT }}
+      targetPort: {{ .Values.global.env.UPSOURCE_PSI_BROKER_LISTEN_PORT }}
   selector:
     app-service: psi-broker
 status:

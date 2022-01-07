@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J-Xmx{{ .Values.global.env.UPSOURCE_FRONTEND_XMX }}
+            - --J{{ .Values.global.env.UPSOURCE_FRONTEND_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}

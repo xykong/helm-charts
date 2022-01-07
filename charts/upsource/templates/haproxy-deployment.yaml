@@ -21,18 +21,15 @@ spec:
       containers:
         - env:
             - name: MONITORING_HOST
-              value: monitoring
+              value: "opscenter.default.svc.cluster.local"
             - name: MONITORING_PORT
-              value: upsource_monitoring_listen_port
+              value: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT | quote }}
             - name: UPSOURCE_EXPOSED_PROXY_PORT
               value: "8080"
             - name: UPSOURCE_MONITORING_LISTEN_PORT
-              value: upsource_monitoring_listen_port
-            - name: UPSOURCE_SUBNET
-              value: upsource_subnet
-            - name: constraint
-              value: node==upsource_proxy_node
-          image: upsource_images_prefixjetbrains/upsource-proxy:upsource_version
+              value: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT | quote }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.haproxy.image.repository }}:{{ .Values.haproxy.image.tag }}
+          imagePullPolicy: {{ .Values.haproxy.image.pullPolicy | quote }}
           name: haproxy
           ports:
             - containerPort: 8080

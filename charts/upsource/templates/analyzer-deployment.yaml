@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: {{ .Values.analyzer.image.pullPolicy | quote }}
           # command: ["tail", "-f", "/etc/hosts"]
           args:
-            - --J-Xmx{{ .Values.global.env.UPSOURCE_ANALYZER_XMX }}
+            - --J{{ .Values.global.env.UPSOURCE_ANALYZER_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -44,6 +44,9 @@ spec:
             - mountPath: /opt/upsource-analyzer/logs
               name: analyzer-claim0
       restartPolicy: Always
+      securityContext:
+        runAsUser: 13001
+        fsGroup: 13001
       volumes:
         - name: analyzer-claim0
           persistentVolumeClaim:

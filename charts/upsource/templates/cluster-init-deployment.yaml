@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J-Xmx{{ .Values.global.env.UPSOURCE_CLUSTER_INIT_XMX }}
+            - --J{{ .Values.global.env.UPSOURCE_CLUSTER_INIT_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -31,10 +31,10 @@ spec:
           image: {{ .Values.global.image.prefix }}{{ .Values.clusterInit.image.repository }}:{{ .Values.clusterInit.image.tag }}
           imagePullPolicy: {{ .Values.clusterInit.image.pullPolicy | quote }}
           name: cluster-init
-          command:
-            - tail
-            - -f
-            - /etc/hosts
+          # command:
+          #   - tail
+          #   - -f
+          #   - /etc/hosts
           ports:
             - containerPort: 10061
             - containerPort: 8886

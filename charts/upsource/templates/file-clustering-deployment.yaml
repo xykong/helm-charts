@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J-Xmx{{ .Values.global.env.UPSOURCE_FILE_CLUSTERING_XMX }}
+            - --J{{ .Values.global.env.UPSOURCE_FILE_CLUSTERING_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -40,6 +40,9 @@ spec:
             - mountPath: /opt/upsource-file-clustering/logs
               name: file-clustering-claim0
       restartPolicy: Always
+      securityContext:
+        runAsUser: 13001
+        fsGroup: 13001
       volumes:
         - name: file-clustering-claim0
           persistentVolumeClaim:

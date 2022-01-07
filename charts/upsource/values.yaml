@@ -92,30 +92,75 @@ global:
 
   env:
     # UPSOURCE_SUBNET: upsource_subnet
-    # UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
+
+    # Frontend web server listens to this port inside the cluster network.
+    # All containers started for the Frontend service are load-balanced by the haproxy service which is an entry point of the cluster.
+    # (Frontends are not supposed to be available through this port outside the cluster network, but only through haproxy)
+    UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
+
+    # Comma-separated list of cassandra cluster hosts
     CASSANDRA_HOSTS: cassandra.default.svc.cluster.local
+
+    # Port of a node in cassandra cluster
     CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
+
     UPSOURCE_DATABASE: datastax
-    # HUB_KEYSTORE_PASSWORD: hub_keystore_password
+
+    # Keystore containing the Hub SSL certificate might be required by Upsource services
+    # if external Hub is behind SSL and the SSL certificate is self-signed or signed by a self-signed root CA.
+    # In this case the keystore should be copied to all cluster nodes and provided to all services containers as a volume (see cluster documentation for more details).
+    # By default, the keystore is expected to be found at the following path inside the container: /opt/upsource-<service-name>/conf/keystore.jks)
+    # Path inside the container can be overridden by HUB_KEYSTORE_PATH parameter
     # HUB_KEYSTORE_PATH: hub_keystore_path
+
+    # Master password for the keystore (if set)
+    # HUB_KEYSTORE_PASSWORD: hub_keystore_password
+
+    # URL of external Hub. It should be available before Upsource cluster startup
     HUB_URL: http://hub.default.svc.cluster.local:8080/hub/
-    UPSOURCE_CLUSTER_INIT_XMX: 1024m
-    UPSOURCE_ANALYZER_XMX: 1024m
-    # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: upsource_backups_path_on_host_system
-    UPSOURCE_FILE_CLUSTERING_XMX: 1024m
-    UPSOURCE_FRONTEND_XMX: 1024m
-    # UPSOURCE_IMAGES_PREFIX: upsource_images_prefix
-    # UPSOURCE_MONITORING_LISTEN_PORT: upsource_monitoring_listen_port
+
+    UPSOURCE_CLUSTER_INIT_XMX: -Xmx1024m
+    UPSOURCE_ANALYZER_XMX: -Xmx1024m
+
+    # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM variable defines the path on the host machine where Upsource will store backups.
+    # Default value of this path is set to /opt/upsource/backups in cluster.sh file and it can be customized in docker-compose-params.env file.
+    # make sure user jetbrains (with id 13001) used for starting the service inside the docker container has read/write access to that folder on the host machine.
+    UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: /opt/upsource/backups
+
+    UPSOURCE_FILE_CLUSTERING_XMX: -Xmx1024m
+    UPSOURCE_FRONTEND_XMX: -Xmx1024m
+
+    # UPSOURCE_IMAGES_PREFIX: ""
+
+    # Monitoring and operations center web server listens to this port inside the cluster network.
+    # haproxy routes all requests with context path /monitoring/ to this web server.
+    # Default value of UPSOURCE_MONITORING_LISTEN_PORT is set to 10080 in cluster.sh and can be customized in file docker-compose-params.env.
+    UPSOURCE_MONITORING_LISTEN_PORT: 10080
+
     # UPSOURCE_NET_NAME: upsource_net_name
-    UPSOURCE_OPSCENTER_XMX: 1024m
-    UPSOURCE_PSI_AGENT_XMX: 1024m
-    # UPSOURCE_PSI_BROKER_LISTEN_PORT: upsource_psi_broker_listen_port
-    UPSOURCE_PSI_BROKER_XMX: 1024m
+    UPSOURCE_OPSCENTER_XMX: -Xmx1024m
+    UPSOURCE_PSI_AGENT_XMX: -Xmx1024m
+
+    # PSI Broker listen to PSI agents at this port.
+    UPSOURCE_PSI_BROKER_LISTEN_PORT: 10090
+
+    UPSOURCE_PSI_BROKER_XMX: -Xmx1024m
+
+    # Key of the trusted service pre-configured in Hub. This service is used by all Upsource services while communicating with Hub
     UPSOURCE_SERVICE_ID: 888004de-ba79-4353-899a-a05d402f78a6
+
+    # Secret of the trusted service pre-configured in Hub
     UPSOURCE_SERVICE_SECRET: OXLPh6Kb6Mej
-    # UPSOURCE_SERVICE_LISTEN_ADDRESS: 0.0.0.0
-    # UPSOURCE_SERVICE_MESSAGING_PORT: '10061'
-    # UPSOURCE_STATISTICS_UPLOAD: 'true'
+
+    UPSOURCE_SERVICE_LISTEN_ADDRESS: 0.0.0.0
+
+    # Defines internal port used by messaging topology
+    UPSOURCE_SERVICE_MESSAGING_PORT: 10061
+
+    # Set to false if you don't want to send anonymous usage statistics to JetBrains
+    UPSOURCE_STATISTICS_UPLOAD: false
+
+    # Base URL end users access Upsource by
     UPSOURCE_URL: http://upsource.default.svc.cluster.local
     UPSOURCE_VERSION: 2020.1.1956
     UPSOURCE_MONITORING_RECORD_HOURS: 1
@@ -230,6 +275,19 @@ psiBroker:
   image:
     registry: docker.io
     repository: jetbrains/upsource-psi-broker
+    tag: 2020.1.1956
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 9042
+  persistence:
+    storageClass: 'cbs-csi'
+    size: 10Gi
+
+haproxy:
+  image:
+    registry: docker.io
+    repository: jetbrains/upsource-proxy
     tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
