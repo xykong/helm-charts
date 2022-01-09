@@ -35,4 +35,3 @@ spec:
             - containerPort: 8080
           resources: {}
       restartPolicy: Always
-status: {}

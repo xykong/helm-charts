@@ -67,3 +67,24 @@ Return the proper image name
 {{- define "upsource.image" -}}
 {{ include "common.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
 {{- end -}}
+
+{{/*
+Return the proper log4j.xml volumes config
+*/}}
+{{- define "configmap.volume.log4j.xml" -}}
+- name: config-log4j-xml
+  configMap:
+    name: upsource
+    items:
+    - key: log4j.xml
+      path: log4j.xml
+{{- end -}}
+
+{{/*
+Return the proper log4j.xml volumeMounts config
+*/}}
+{{- define "configmap.volumeMounts.log4j.xml" -}}
+- name: config-log4j-xml
+  mountPath: /opt/upsource-analyzer/conf/log4j.xml
+  subPath: log4j.xml
+{{- end -}}

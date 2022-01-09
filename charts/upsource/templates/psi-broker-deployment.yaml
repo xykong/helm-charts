@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_PSI_BROKER_XMX }}
+            - --J{{ .Values.psiBroker.args.UPSOURCE_PSI_BROKER_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -38,8 +38,9 @@ spec:
             - containerPort: {{ .Values.global.env.UPSOURCE_PSI_BROKER_LISTEN_PORT }}
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-psi-broker/logs
-              name: psi-broker-claim0
+            - name: psi-broker-claim0
+              mountPath: /opt/upsource-psi-broker/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -48,4 +49,4 @@ spec:
         - name: psi-broker-claim0
           persistentVolumeClaim:
             claimName: psi-broker-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

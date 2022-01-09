@@ -76,6 +76,7 @@ spec:
             - name: hub-claim0
               mountPath: /opt/hub/backups
               subPath: backups
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -84,4 +85,4 @@ spec:
         - name: hub-claim0
           persistentVolumeClaim:
             claimName: hub-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

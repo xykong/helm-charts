@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_OPSCENTER_XMX }}
+            - --J{{ .Values.opsCenter.args.UPSOURCE_OPSCENTER_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -38,12 +38,13 @@ spec:
             - containerPort: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT }}
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-opscenter/logs
-              name: opscenter-claim0
+            - name: opscenter-claim0
+              mountPath: /opt/upsource-opscenter/logs
               subPath: logs
-            - mountPath: /opt/upsource-opscenter/backup
-              name: opscenter-claim0
+            - name: opscenter-claim0
+              mountPath: /opt/upsource-opscenter/backup
               subPath: backup
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -52,4 +53,4 @@ spec:
         - name: opscenter-claim0
           persistentVolumeClaim:
             claimName: opscenter-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

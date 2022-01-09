@@ -6,7 +6,7 @@ metadata:
     app-service: frontend
   name: frontend
 spec:
-  replicas: 1
+  replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app-service: frontend
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_FRONTEND_XMX }}
+            - --J{{ .Values.frontend.args.UPSOURCE_FRONTEND_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -40,6 +40,7 @@ spec:
           volumeMounts:
             - name: frontend-claim0
               mountPath: /opt/upsource-frontend/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -48,4 +49,4 @@ spec:
         - name: frontend-claim0
           persistentVolumeClaim:
             claimName: frontend-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

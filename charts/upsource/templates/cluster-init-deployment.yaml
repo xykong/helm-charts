@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_CLUSTER_INIT_XMX }}
+            - --J{{ .Values.clusterInit.args.UPSOURCE_CLUSTER_INIT_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -40,8 +40,9 @@ spec:
             - containerPort: 8886
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-cluster-init/logs
-              name: cluster-init-claim0
+            - name: cluster-init-claim0
+              mountPath: /opt/upsource-cluster-init/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -50,4 +51,4 @@ spec:
         - name: cluster-init-claim0
           persistentVolumeClaim:
             claimName: cluster-init-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

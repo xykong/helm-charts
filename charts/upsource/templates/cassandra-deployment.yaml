@@ -38,9 +38,10 @@ spec:
           volumeMounts:
             - name: cassandra-claim0
               mountPath: /var/lib/cassandra
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       volumes:
         - name: cassandra-claim0
           persistentVolumeClaim:
             claimName: cassandra-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

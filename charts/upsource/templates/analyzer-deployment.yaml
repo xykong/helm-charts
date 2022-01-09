@@ -6,7 +6,7 @@ metadata:
     app-service: analyzer
   name: analyzer
 spec:
-  replicas: 1
+  replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app-service: analyzer
@@ -19,16 +19,13 @@ spec:
         app-network/upsource-net-name: 'true'
         app-service: analyzer
     spec:
-      securityContext:
-        runAsUser: 13001
-        fsGroup: 13001
       containers:
         - name: analyzer
           image: {{ .Values.global.image.prefix }}{{ .Values.analyzer.image.repository }}:{{ .Values.analyzer.image.tag }}
           imagePullPolicy: {{ .Values.analyzer.image.pullPolicy | quote }}
           # command: ["tail", "-f", "/etc/hosts"]
           args:
-            - --J{{ .Values.global.env.UPSOURCE_ANALYZER_XMX }}
+            - --J{{ .Values.analyzer.args.UPSOURCE_ANALYZER_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -41,8 +38,9 @@ spec:
             - containerPort: 8886
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-analyzer/logs
-              name: analyzer-claim0
+            - name: analyzer-claim0
+              mountPath: /opt/upsource-analyzer/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -51,4 +49,4 @@ spec:
         - name: analyzer-claim0
           persistentVolumeClaim:
             claimName: analyzer-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

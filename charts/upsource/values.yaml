@@ -88,6 +88,7 @@ affinity: {}
 global:
   image:
     prefix: ''
+    UPSOURCE_VERSION: 2020.1.1956
   args:
 
   env:
@@ -119,16 +120,10 @@ global:
     # URL of external Hub. It should be available before Upsource cluster startup
     HUB_URL: http://hub.default.svc.cluster.local:8080/hub/
 
-    UPSOURCE_CLUSTER_INIT_XMX: -Xmx1024m
-    UPSOURCE_ANALYZER_XMX: -Xmx1024m
-
     # UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM variable defines the path on the host machine where Upsource will store backups.
     # Default value of this path is set to /opt/upsource/backups in cluster.sh file and it can be customized in docker-compose-params.env file.
     # make sure user jetbrains (with id 13001) used for starting the service inside the docker container has read/write access to that folder on the host machine.
     UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: /opt/upsource/backups
-
-    UPSOURCE_FILE_CLUSTERING_XMX: -Xmx1024m
-    UPSOURCE_FRONTEND_XMX: -Xmx1024m
 
     # UPSOURCE_IMAGES_PREFIX: ""
 
@@ -138,13 +133,9 @@ global:
     UPSOURCE_MONITORING_LISTEN_PORT: 10080
 
     # UPSOURCE_NET_NAME: upsource_net_name
-    UPSOURCE_OPSCENTER_XMX: -Xmx1024m
-    UPSOURCE_PSI_AGENT_XMX: -Xmx1024m
 
     # PSI Broker listen to PSI agents at this port.
     UPSOURCE_PSI_BROKER_LISTEN_PORT: 10090
-
-    UPSOURCE_PSI_BROKER_XMX: -Xmx1024m
 
     # Key of the trusted service pre-configured in Hub. This service is used by all Upsource services while communicating with Hub
     UPSOURCE_SERVICE_ID: 888004de-ba79-4353-899a-a05d402f78a6
@@ -162,7 +153,6 @@ global:
 
     # Base URL end users access Upsource by
     UPSOURCE_URL: http://upsource.default.svc.cluster.local
-    UPSOURCE_VERSION: 2020.1.1956
     UPSOURCE_MONITORING_RECORD_HOURS: 1
 
 hub:
@@ -179,6 +169,7 @@ hub:
     size: 10Gi
 
 analyzer:
+  replicas: 2
   image:
     registry: docker.io
     repository: jetbrains/upsource-analyzer
@@ -190,6 +181,8 @@ analyzer:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_ANALYZER_XMX: -Xmx1024m
 
 cassandra:
   upsourceSubnet: ''
@@ -218,6 +211,8 @@ clusterInit:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_CLUSTER_INIT_XMX: -Xmx1024m
 
 fileClustering:
   image:
@@ -231,8 +226,11 @@ fileClustering:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_FILE_CLUSTERING_XMX: -Xmx1024m
 
 frontend:
+  replicas: 2
   image:
     registry: docker.io
     repository: jetbrains/upsource-frontend
@@ -244,6 +242,8 @@ frontend:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_FRONTEND_XMX: -Xmx1024m
 
 opsCenter:
   image:
@@ -257,8 +257,11 @@ opsCenter:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_OPSCENTER_XMX: -Xmx1024m
 
 psiAgent:
+  replicas: 2
   image:
     registry: docker.io
     repository: jetbrains/upsource-psi-agent
@@ -270,6 +273,8 @@ psiAgent:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_PSI_AGENT_XMX: -Xmx1024m
 
 psiBroker:
   image:
@@ -283,6 +288,8 @@ psiBroker:
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
+  args:
+    UPSOURCE_PSI_BROKER_XMX: -Xmx1024m
 
 haproxy:
   image:

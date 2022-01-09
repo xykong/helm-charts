@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_FILE_CLUSTERING_XMX }}
+            - --J{{ .Values.fileClustering.args.UPSOURCE_FILE_CLUSTERING_XMX }}
           env:
           {{- range $index, $topping := .Values.global.env }}
             {{- if $topping }}
@@ -37,8 +37,9 @@ spec:
             - containerPort: 8886
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-file-clustering/logs
-              name: file-clustering-claim0
+            - name: file-clustering-claim0
+              mountPath: /opt/upsource-file-clustering/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -47,4 +48,4 @@ spec:
         - name: file-clustering-claim0
           persistentVolumeClaim:
             claimName: file-clustering-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}

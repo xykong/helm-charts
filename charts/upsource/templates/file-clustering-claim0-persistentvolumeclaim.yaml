@@ -13,4 +13,3 @@ spec:
   resources:
     requests:
       storage: {{ .Values.fileClustering.persistence.size }}
-status: {}

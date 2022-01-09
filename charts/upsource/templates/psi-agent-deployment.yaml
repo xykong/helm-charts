@@ -6,7 +6,7 @@ metadata:
     app-service: psi-agent
   name: psi-agent
 spec:
-  replicas: 1
+  replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app-service: psi-agent
@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - args:
-            - --J{{ .Values.global.env.UPSOURCE_PSI_AGENT_XMX }}
+            - --J{{ .Values.psiAgent.args.UPSOURCE_PSI_AGENT_XMX }}
           env:
             - name: UPSOURCE_PSI_BROKER_HOST
               value: "psi-broker.default.svc.cluster.local"
@@ -39,8 +39,9 @@ spec:
             - containerPort: 8886
           resources: {}
           volumeMounts:
-            - mountPath: /opt/upsource-psi-agent/logs
-              name: psi-agent-claim0
+            - name: psi-agent-claim0
+              mountPath: /opt/upsource-psi-agent/logs
+{{ include "configmap.volumeMounts.log4j.xml" . | indent 12 }}
       restartPolicy: Always
       securityContext:
         runAsUser: 13001
@@ -49,4 +50,4 @@ spec:
         - name: psi-agent-claim0
           persistentVolumeClaim:
             claimName: psi-agent-claim0
-status: {}
+{{ include "configmap.volume.log4j.xml" . | indent 8 }}
