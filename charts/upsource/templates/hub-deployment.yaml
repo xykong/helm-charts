@@ -49,14 +49,6 @@ spec:
               subPath: conf
       containers:
         - env:
-        {{- if .Values.hub.upsourceSubnet }}
-            - name: UPSOURCE_SUBNET
-              value: {{ .Values.hub.upsourceSubnet }}
-        {{- end }}
-        {{- if .Values.hub.constraint }}
-            - name: constraint
-              value: node=={{ .Values.hub.constraint }}
-        {{- end }}
           image: {{ .Values.global.image.prefix }}{{ .Values.hub.image.repository }}:{{ .Values.hub.image.tag }}
           imagePullPolicy: {{ .Values.hub.image.pullPolicy | quote }}
           name: hub

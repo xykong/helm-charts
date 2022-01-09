@@ -21,14 +21,6 @@ spec:
     spec:
       containers:
         - env:
-        {{- if .Values.cassandra.upsourceSubnet }}
-            - name: UPSOURCE_SUBNET
-              value: {{ .Values.cassandra.upsourceSubnet }}
-        {{- end }}
-        {{- if .Values.cassandra.constraint }}
-            - name: constraint
-              value: node=={{ .Values.cassandra.constraint }}
-        {{- end }}
           image: {{ .Values.global.image.prefix }}{{ .Values.cassandra.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.cassandra.image.pullPolicy | quote }}
           name: cassandra

@@ -92,8 +92,6 @@ global:
   args:
 
   env:
-    # UPSOURCE_SUBNET: upsource_subnet
-
     # Frontend web server listens to this port inside the cluster network.
     # All containers started for the Frontend service are load-balanced by the haproxy service which is an entry point of the cluster.
     # (Frontends are not supposed to be available through this port outside the cluster network, but only through haproxy)
@@ -184,8 +182,6 @@ analyzer:
     UPSOURCE_ANALYZER_XMX: -Xmx1024m
 
 cassandra:
-  upsourceSubnet: ''
-  constraint: ''
   image:
     registry: docker.io
     repository: jetbrains/upsource-cassandra
