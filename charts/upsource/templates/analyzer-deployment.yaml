@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: analyzer
-          image: {{ .Values.global.image.prefix }}{{ .Values.analyzer.image.repository }}:{{ .Values.analyzer.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.analyzer.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.analyzer.image.pullPolicy | quote }}
           # command: ["tail", "-f", "/etc/hosts"]
           args:

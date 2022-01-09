@@ -29,7 +29,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.psiBroker.image.repository }}:{{ .Values.psiBroker.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.psiBroker.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.psiBroker.image.pullPolicy | quote }}
           name: psi-broker
           ports:

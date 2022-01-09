@@ -29,7 +29,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.fileClustering.image.repository }}:{{ .Values.fileClustering.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.fileClustering.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.fileClustering.image.pullPolicy | quote }}
           name: file-clustering
           ports:

@@ -173,7 +173,6 @@ analyzer:
   image:
     registry: docker.io
     repository: jetbrains/upsource-analyzer
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -190,7 +189,6 @@ cassandra:
   image:
     registry: docker.io
     repository: jetbrains/upsource-cassandra
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -203,7 +201,6 @@ clusterInit:
   image:
     registry: docker.io
     repository: jetbrains/upsource-cluster-init
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -218,7 +215,6 @@ fileClustering:
   image:
     registry: docker.io
     repository: jetbrains/upsource-file-clustering
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -234,7 +230,6 @@ frontend:
   image:
     registry: docker.io
     repository: jetbrains/upsource-frontend
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -249,7 +244,6 @@ opsCenter:
   image:
     registry: docker.io
     repository: jetbrains/upsource-opscenter
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -265,7 +259,6 @@ psiAgent:
   image:
     registry: docker.io
     repository: jetbrains/upsource-psi-agent
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -280,7 +273,6 @@ psiBroker:
   image:
     registry: docker.io
     repository: jetbrains/upsource-psi-broker
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
@@ -295,7 +287,6 @@ haproxy:
   image:
     registry: docker.io
     repository: jetbrains/upsource-proxy
-    tag: 2020.1.1956
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP

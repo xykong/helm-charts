@@ -29,7 +29,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.opsCenter.image.repository }}:{{ .Values.opsCenter.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.opsCenter.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.opsCenter.image.pullPolicy | quote }}
           name: opscenter
           ports:

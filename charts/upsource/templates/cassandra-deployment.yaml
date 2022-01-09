@@ -29,7 +29,7 @@ spec:
             - name: constraint
               value: node=={{ .Values.cassandra.constraint }}
         {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.cassandra.image.repository }}:{{ .Values.cassandra.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.cassandra.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.cassandra.image.pullPolicy | quote }}
           name: cassandra
           ports:

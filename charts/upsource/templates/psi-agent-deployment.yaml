@@ -31,7 +31,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.psiAgent.image.repository }}:{{ .Values.psiAgent.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.psiAgent.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.psiAgent.image.pullPolicy | quote }}
           name: psi-agent
           ports:

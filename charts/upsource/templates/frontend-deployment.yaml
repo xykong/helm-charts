@@ -29,7 +29,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.frontend.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.frontend.image.pullPolicy | quote }}
           name: frontend
           ports:

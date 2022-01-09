@@ -28,7 +28,7 @@ spec:
               value: {{ $topping | quote }}
             {{- end }}
           {{- end }}
-          image: {{ .Values.global.image.prefix }}{{ .Values.clusterInit.image.repository }}:{{ .Values.clusterInit.image.tag }}
+          image: {{ .Values.global.image.prefix }}{{ .Values.clusterInit.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.clusterInit.image.pullPolicy | quote }}
           name: cluster-init
           # command:
