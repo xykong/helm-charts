@@ -154,7 +154,7 @@ analyzer:
     storageClass: 'cbs-csi'
     size: 10Gi
   args:
-    UPSOURCE_ANALYZER_XMX: -Xmx1024m
+    UPSOURCE_ANALYZER_XMX: -Xmx7168m
 
 cassandra:
   image:
@@ -190,7 +190,7 @@ fileClustering:
     storageClass: 'cbs-csi'
     size: 10Gi
   args:
-    UPSOURCE_FILE_CLUSTERING_XMX: -Xmx1024m
+    UPSOURCE_FILE_CLUSTERING_XMX: -Xmx2048m
 
 frontend:
   replicas: 2
@@ -209,7 +209,7 @@ frontend:
     storageClass: 'cbs-csi'
     size: 10Gi
   args:
-    UPSOURCE_FRONTEND_XMX: -Xmx1024m
+    UPSOURCE_FRONTEND_XMX: -Xmx3072m
 
 opsCenter:
   image:
@@ -227,7 +227,7 @@ opsCenter:
     storageClass: 'cbs-csi'
     size: 10Gi
   args:
-    UPSOURCE_OPSCENTER_XMX: -Xmx1024m
+    UPSOURCE_OPSCENTER_XMX: -Xmx3072m
 
 psiAgent:
   replicas: 2
@@ -239,7 +239,7 @@ psiAgent:
     storageClass: 'cbs-csi'
     size: 10Gi
   args:
-    UPSOURCE_PSI_AGENT_XMX: -Xmx1024m
+    UPSOURCE_PSI_AGENT_XMX: -Xmx7168m
 
 psiBroker:
   image:
