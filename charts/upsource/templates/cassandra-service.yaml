@@ -13,5 +13,3 @@ spec:
       targetPort: {{ .Values.cassandra.service.port }}
   selector:
     app-service: cassandra
-status:
-  loadBalancer: {}

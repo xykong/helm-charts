@@ -14,10 +14,8 @@ spec:
     - name: "8886"
       port: 8886
       targetPort: 8886
-    - name: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT | quote }}
-      port: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT }}
-      targetPort: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT }}
+    - name: {{ .Values.opsCenter.service.port | quote }}
+      port: {{ .Values.opsCenter.service.port }}
+      targetPort: {{ .Values.opsCenter.service.port }}
   selector:
     app-service: opscenter
-status:
-  loadBalancer: {}

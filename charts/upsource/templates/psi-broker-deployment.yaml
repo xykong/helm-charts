@@ -16,26 +16,20 @@ spec:
     metadata:
       annotations:
       labels:
-        app-network/upsource-net-name: "true"
         app-service: psi-broker
     spec:
       containers:
         - args:
             - --J{{ .Values.psiBroker.args.UPSOURCE_PSI_BROKER_XMX }}
           env:
-          {{- range $index, $topping := .Values.global.env }}
-            {{- if $topping }}
-            - name: {{ $index }}
-              value: {{ $topping | quote }}
-            {{- end }}
-          {{- end }}
+{{- include "upsource.global.envirments" . | indent 10 }}
           image: {{ .Values.global.image.prefix }}{{ .Values.psiBroker.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.psiBroker.image.pullPolicy | quote }}
           name: psi-broker
           ports:
             - containerPort: 10061
             - containerPort: 8886
-            - containerPort: {{ .Values.global.env.UPSOURCE_PSI_BROKER_LISTEN_PORT }}
+            - containerPort: {{ .Values.psiBroker.service.port }}
           resources: {}
           volumeMounts:
             - name: psi-broker-claim0

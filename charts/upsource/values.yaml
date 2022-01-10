@@ -92,17 +92,6 @@ global:
   args:
 
   env:
-    # Frontend web server listens to this port inside the cluster network.
-    # All containers started for the Frontend service are load-balanced by the haproxy service which is an entry point of the cluster.
-    # (Frontends are not supposed to be available through this port outside the cluster network, but only through haproxy)
-    UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
-
-    # Comma-separated list of cassandra cluster hosts
-    CASSANDRA_HOSTS: cassandra.default.svc.cluster.local
-
-    # Port of a node in cassandra cluster
-    CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
-
     UPSOURCE_DATABASE: datastax
 
     # Keystore containing the Hub SSL certificate might be required by Upsource services
@@ -123,18 +112,6 @@ global:
     # make sure user jetbrains (with id 13001) used for starting the service inside the docker container has read/write access to that folder on the host machine.
     UPSOURCE_BACKUPS_PATH_ON_HOST_SYSTEM: /opt/upsource/backups
 
-    # UPSOURCE_IMAGES_PREFIX: ""
-
-    # Monitoring and operations center web server listens to this port inside the cluster network.
-    # haproxy routes all requests with context path /monitoring/ to this web server.
-    # Default value of UPSOURCE_MONITORING_LISTEN_PORT is set to 10080 in cluster.sh and can be customized in file docker-compose-params.env.
-    UPSOURCE_MONITORING_LISTEN_PORT: 10080
-
-    # UPSOURCE_NET_NAME: upsource_net_name
-
-    # PSI Broker listen to PSI agents at this port.
-    UPSOURCE_PSI_BROKER_LISTEN_PORT: 10090
-
     # Key of the trusted service pre-configured in Hub. This service is used by all Upsource services while communicating with Hub
     UPSOURCE_SERVICE_ID: 888004de-ba79-4353-899a-a05d402f78a6
 
@@ -151,6 +128,7 @@ global:
 
     # Base URL end users access Upsource by
     UPSOURCE_URL: http://upsource.default.svc.cluster.local
+
     UPSOURCE_MONITORING_RECORD_HOURS: 1
 
 hub:
@@ -172,9 +150,6 @@ analyzer:
     registry: docker.io
     repository: jetbrains/upsource-analyzer
     pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -188,6 +163,8 @@ cassandra:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
+    # Port of a node in cassandra cluster
+    # CASSANDRA_NATIVE_TRANSPORT_PORT: '9042'
     port: 9042
   persistence:
     storageClass: 'cbs-csi'
@@ -198,9 +175,6 @@ clusterInit:
     registry: docker.io
     repository: jetbrains/upsource-cluster-init
     pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -212,9 +186,6 @@ fileClustering:
     registry: docker.io
     repository: jetbrains/upsource-file-clustering
     pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -229,7 +200,11 @@ frontend:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
-    port: 9042
+    # Frontend web server listens to this port inside the cluster network.
+    # All containers started for the Frontend service are load-balanced by the haproxy service which is an entry point of the cluster.
+    # (Frontends are not supposed to be available through this port outside the cluster network, but only through haproxy)
+    # UPSOURCE_WEB_SERVER_LISTEN_PORT: 10070
+    port: 10070
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -243,7 +218,11 @@ opsCenter:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
-    port: 9042
+    # Monitoring and operations center web server listens to this port inside the cluster network.
+    # haproxy routes all requests with context path /monitoring/ to this web server.
+    # Default value of UPSOURCE_MONITORING_LISTEN_PORT is set to 10080 in cluster.sh and can be customized in file docker-compose-params.env.
+    # UPSOURCE_WEB_SERVER_LISTEN_PORT: 10080
+    port: 10080
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -256,9 +235,6 @@ psiAgent:
     registry: docker.io
     repository: jetbrains/upsource-psi-agent
     pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 9042
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -272,7 +248,9 @@ psiBroker:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
-    port: 9042
+    # PSI Broker listen to PSI agents at this port.
+    # UPSOURCE_PSI_BROKER_LISTEN_PORT: 10090
+    port: 10090
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi
@@ -286,7 +264,7 @@ haproxy:
     pullPolicy: IfNotPresent
   service:
     type: ClusterIP
-    port: 9042
+    port: 8080
   persistence:
     storageClass: 'cbs-csi'
     size: 10Gi

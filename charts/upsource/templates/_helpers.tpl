@@ -88,3 +88,29 @@ Return the proper log4j.xml volumeMounts config
   mountPath: /opt/upsource-analyzer/conf/log4j.xml
   subPath: log4j.xml
 {{- end -}}
+
+{{/*
+Return the proper image name
+*/}}
+{{- define "upsource.service.name" -}}
+{{ .name }}.{{ .Release.Namespace }}.svc.cluster.local
+{{- end -}}
+
+{{/*
+Return the proper image name
+    # Comma-separated list of cassandra cluster hosts
+    CASSANDRA_HOSTS: cassandra.default.svc.cluster.local
+*/}}
+{{- define "upsource.global.envirments" -}}
+{{- $envirments := set .Values.global.env "UPSOURCE_PSI_BROKER_LISTEN_PORT" .Values.psiBroker.service.port -}}
+{{- $envirments := set .Values.global.env "UPSOURCE_MONITORING_LISTEN_PORT" .Values.opsCenter.service.port -}}
+{{- $envirments := set .Values.global.env "UPSOURCE_WEB_SERVER_LISTEN_PORT" .Values.frontend.service.port -}}
+{{- $envirments := set .Values.global.env "CASSANDRA_NATIVE_TRANSPORT_PORT" .Values.cassandra.service.port -}}
+{{- $envirments := set .Values.global.env "CASSANDRA_HOSTS" (include "upsource.service.name" (set $ "name" "cassandra")) -}}
+{{- range $index, $topping := $envirments }}
+  {{- if $topping }}
+  - name: {{ $index }}
+    value: {{ $topping | quote }}
+  {{- end }}
+{{- end }}
+{{- end -}}

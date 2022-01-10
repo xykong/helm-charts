@@ -14,10 +14,8 @@ spec:
     - name: "8886"
       port: 8886
       targetPort: 8886
-    - name: "10070"
-      port: 10070
-      targetPort: 10070
+    - name: {{ .Values.frontend.service.port | quote }}
+      port: {{ .Values.frontend.service.port }}
+      targetPort: {{ .Values.frontend.service.port }}
   selector:
     app-service: frontend
-status:
-  loadBalancer: {}

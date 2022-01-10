@@ -15,23 +15,22 @@ spec:
     metadata:
       annotations:
       labels:
-        app-network/upsource-net-name: "true"
         app-service: haproxy
     spec:
       containers:
         - env:
             - name: MONITORING_HOST
-              value: "opscenter.default.svc.cluster.local"
+              value: {{ include "upsource.service.name" (set $ "name" "opscenter") | quote }}
             - name: MONITORING_PORT
               value: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT | quote }}
             - name: UPSOURCE_EXPOSED_PROXY_PORT
-              value: "8080"
+              value: {{ .Values.haproxy.service.port | quote }}
             - name: UPSOURCE_MONITORING_LISTEN_PORT
               value: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT | quote }}
           image: {{ .Values.global.image.prefix }}{{ .Values.haproxy.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.haproxy.image.pullPolicy | quote }}
           name: haproxy
           ports:
-            - containerPort: 8080
+            - containerPort: {{ .Values.haproxy.service.port }}
           resources: {}
       restartPolicy: Always

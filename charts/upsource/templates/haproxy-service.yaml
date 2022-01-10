@@ -7,10 +7,8 @@ metadata:
   name: haproxy
 spec:
   ports:
-    - name: "8080"
-      port: 8080
-      targetPort: 8080
+    - name: {{ .Values.haproxy.service.port | quote }}
+      port: {{ .Values.haproxy.service.port }}
+      targetPort: {{ .Values.haproxy.service.port }}
   selector:
     app-service: haproxy
-status:
-  loadBalancer: {}

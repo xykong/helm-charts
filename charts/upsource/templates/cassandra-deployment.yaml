@@ -16,7 +16,6 @@ spec:
     metadata:
       annotations:
       labels:
-        app-network/upsource-net-name: "true"
         app-service: cassandra
     spec:
       containers:
@@ -25,7 +24,7 @@ spec:
           imagePullPolicy: {{ .Values.cassandra.image.pullPolicy | quote }}
           name: cassandra
           ports:
-            - containerPort: 9042
+            - containerPort: {{ .Values.cassandra.service.port }}
           resources: {}
           volumeMounts:
             - name: cassandra-claim0

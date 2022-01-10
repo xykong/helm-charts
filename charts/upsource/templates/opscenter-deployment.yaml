@@ -16,26 +16,20 @@ spec:
     metadata:
       annotations:
       labels:
-        app-network/upsource-net-name: "true"
         app-service: opscenter
     spec:
       containers:
         - args:
             - --J{{ .Values.opsCenter.args.UPSOURCE_OPSCENTER_XMX }}
           env:
-          {{- range $index, $topping := .Values.global.env }}
-            {{- if $topping }}
-            - name: {{ $index }}
-              value: {{ $topping | quote }}
-            {{- end }}
-          {{- end }}
+{{- include "upsource.global.envirments" . | indent 10 }}
           image: {{ .Values.global.image.prefix }}{{ .Values.opsCenter.image.repository }}:{{ .Values.global.image.UPSOURCE_VERSION }}
           imagePullPolicy: {{ .Values.opsCenter.image.pullPolicy | quote }}
           name: opscenter
           ports:
             - containerPort: 10061
             - containerPort: 8886
-            - containerPort: {{ .Values.global.env.UPSOURCE_MONITORING_LISTEN_PORT }}
+            - containerPort: {{ .Values.opsCenter.service.port }}
           resources: {}
           volumeMounts:
             - name: opscenter-claim0

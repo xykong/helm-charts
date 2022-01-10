@@ -5,7 +5,7 @@ metadata:
     app-service: cluster-init
   name: cluster-init
 spec:
-  type: {{ .Values.clusterInit.service.type }}
+  type: ClusterIP
   ports:
     - name: "10061"
       port: 10061
@@ -15,5 +15,3 @@ spec:
       targetPort: 8886
   selector:
     app-service: cluster-init
-status:
-  loadBalancer: {}

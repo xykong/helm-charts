@@ -16,7 +16,6 @@ spec:
     metadata:
       annotations:
       labels:
-        app-network/upsource-net-name: "true"
         app-service: hub
     spec:
       initContainers:

@@ -27,12 +27,7 @@ spec:
           args:
             - --J{{ .Values.analyzer.args.UPSOURCE_ANALYZER_XMX }}
           env:
-          {{- range $index, $topping := .Values.global.env }}
-            {{- if $topping }}
-            - name: {{ $index }}
-              value: {{ $topping | quote }}
-            {{- end }}
-          {{- end }}
+{{- include "upsource.global.envirments" . | indent 10 }}
           ports:
             - containerPort: 10061
             - containerPort: 8886

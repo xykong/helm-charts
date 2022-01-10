@@ -13,5 +13,3 @@ spec:
       targetPort: {{ .Values.hub.service.port }}
   selector:
     app-service: hub
-status:
-  loadBalancer: {}
